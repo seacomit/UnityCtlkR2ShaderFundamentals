@@ -18,18 +18,23 @@ Shader "Custom/My First Shader" {
 
 				struct MyInterpolators {
 					float4 position : SV_POSITION;
-					float3 localPosition : TEXCOORD0;
+					float2 uv : TEXCOORD0;
 				};
 
-				MyInterpolators MyVertexProgram(float4 position : POSITION) {
+				struct VertexData {
+					float4 position : POSITION;
+					float2 uv : TEXCOORD0;
+				};
+
+				MyInterpolators MyVertexProgram(VertexData v) {
 					MyInterpolators i;
-					i.localPosition = position.xyz;
-					i.position = UnityObjectToClipPos(position);
+					i.uv = v.uv;
+					i.position = UnityObjectToClipPos(v.position);
 					return i;
 				}
 
 				float4 MyFragmentProgram(MyInterpolators i) : SV_TARGET {
-					return float4(i.localPosition + 0.5, 1) * _Tint;
+					return float4(i.uv, 1, 1);
 				}
 
 			ENDCG
