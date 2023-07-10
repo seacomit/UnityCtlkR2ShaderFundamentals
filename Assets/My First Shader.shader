@@ -4,6 +4,7 @@ Shader "Custom/My First Shader" {
 
 	Properties {
 		_Tint ("Tint", Color) = (1, 1, 1, 1)
+		_MainTex ("Texture", 2D) = "white" {}
 	}
 
 	SubShader {
@@ -15,6 +16,7 @@ Shader "Custom/My First Shader" {
 				#include "UnityCG.cginc"
 
 				float4 _Tint;
+				sampler2D _MainTex;
 
 				struct MyInterpolators {
 					float4 position : SV_POSITION;
@@ -34,7 +36,7 @@ Shader "Custom/My First Shader" {
 				}
 
 				float4 MyFragmentProgram(MyInterpolators i) : SV_TARGET {
-					return float4(i.uv, 1, 1);
+					return tex2D(_MainTex, i.uv) * _Tint;
 				}
 
 			ENDCG
