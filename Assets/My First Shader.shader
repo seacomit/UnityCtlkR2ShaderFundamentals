@@ -17,6 +17,7 @@ Shader "Custom/My First Shader" {
 
 				float4 _Tint;
 				sampler2D _MainTex;
+				float4 _MainTex_ST;
 
 				struct MyInterpolators {
 					float4 position : SV_POSITION;
@@ -30,7 +31,8 @@ Shader "Custom/My First Shader" {
 
 				MyInterpolators MyVertexProgram(VertexData v) {
 					MyInterpolators i;
-					i.uv = v.uv;
+					//  v.uv * _MainTex_ST.xy + _MainTex_ST.zw;
+					i.uv = TRANSFORM_TEX(v.uv, _MainTex);
 					i.position = UnityObjectToClipPos(v.position);
 					return i;
 				}
